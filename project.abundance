@@ -62,10 +62,14 @@
         {
           "name": "tr_height",
           "ioValue": 10
+        },
+        {
+          "name": "fillet",
+          "ioValue": 0
         }
       ],
       "codeVersion": 1,
-      "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"base1\", type: \"number\", defaultValue: 40 },\n  { inputName: \"base2\", type: \"number\", defaultValue: 25 },\n  { inputName: \"tr_height\", type: \"number\", defaultValue: 25 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 }\n  \n];\n\nconst isVerticalEdge = (e) => {\n  const start = e.startPoint;\n  const end = e.endPoint;\n  const epsilon = 1e-6;\n  console.log(start)\n  return (\n    Math.abs(start.x - end.x) < epsilon &&\n    Math.abs(start.y - end.y) < epsilon &&\n    Math.abs(start.z - end.z) > epsilon\n  );\n};\n\n\nconst dx = (base1 - base2) / 2;\n\nconst trapezoid = replicad.draw().lineTo([base1, 0])                 // bottom right\n  .lineTo([base1 - dx, tr_height])       // top right\n  .lineTo([dx, tr_height])               // top left\n  .close()   \nlet newPlane = replicad.makePlane()\n\nlet sketchCir = trapezoid.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet filletedCyl = cyl.fillet(1, isVerticalEdge);\nlet cylObj = {\n  geometry: [filletedCyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\nreturn cylObj"
+      "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"base1\", type: \"number\", defaultValue: 40 },\n  { inputName: \"base2\", type: \"number\", defaultValue: 25 },\n  { inputName: \"tr_height\", type: \"number\", defaultValue: 25 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 },\n  { inputName: \"fillet\", type: \"number\", defaultValue: 0 }\n  \n];\n\n\n\nconst dx = (base1 - base2) / 2;\n\nconst trapezoid = replicad.draw().lineTo([base1, 0])                 // bottom right\n  .lineTo([base1 - dx, tr_height])       // top right\n  .lineTo([dx, tr_height])               // top left\n  .close()   \nlet newPlane = replicad.makePlane()\n\nlet sketchCir = trapezoid.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet filletedCyl = cyl.fillet(fillet, (e) => e.inDirection([0, 0, 1]));\nlet cylObj = {\n  geometry: [filletedCyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\nreturn cylObj"
     },
     {
       "atomType": "GitHubMolecule",
