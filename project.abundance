@@ -24,6 +24,11 @@
       "name": "Extrude_height",
       "ioValue": 5,
       "currentEquation": "5"
+    },
+    {
+      "name": "Fillet",
+      "ioValue": 0,
+      "currentEquation": "0"
     }
   ],
   "topLevel": true,
@@ -42,8 +47,8 @@
     },
     {
       "atomType": "Code",
-      "x": 0.3595505617977528,
-      "y": 0.41194029850746267,
+      "x": 0.3567415730337079,
+      "y": 0.4626865671641791,
       "uniqueID": "id-4",
       "ioValues": [
         {
@@ -65,7 +70,8 @@
         },
         {
           "name": "fillet",
-          "ioValue": 0
+          "ioValue": 0,
+          "currentEquation": "0"
         }
       ],
       "codeVersion": 1,
@@ -290,8 +296,8 @@
     },
     {
       "atomType": "Code",
-      "x": 0.7402912621359223,
-      "y": 0.6149253731343284,
+      "x": 0.36329588014981273,
+      "y": 0.7104477611940297,
       "uniqueID": "id-49",
       "ioValues": [
         {
@@ -299,17 +305,13 @@
           "ioValue": "__GEOMETRY_INPUT__"
         },
         {
-          "name": "radius",
-          "ioValue": 5,
-          "currentEquation": "5"
-        },
-        {
-          "name": "height",
-          "ioValue": 10
+          "name": "fillet",
+          "ioValue": 1,
+          "currentEquation": "1"
         }
       ],
       "codeVersion": 1,
-      "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"shape\", type: \"geometry\", defaultValue: null },\n  { inputName: \"radius\", type: \"number\", defaultValue: 5 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 }\n];\n\nlet importedShape = library[shape];\nlet newPlane = replicad.makePlane()\nlet circDraw = replicad.drawCircle(radius)\nlet sketchCir = circDraw.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet cylObj = {\n  geometry: [cyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\n\nlet assembly = await Assembly([importedShape, cylObj]);\nreturn assembly;\n"
+      "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"shape\", type: \"geometry\", defaultValue: null },\n  { inputName: \"fillet\", type: \"number\", defaultValue: 1 },\n];\n\nif (fillet > 0){\n  let importedShape = library[shape]\nlet newPlane = replicad.makePlane()\n return {\n  geometry: [importedShape],\n  dimension: \"3D\",\n  tags: [\"createdShape\"],\n  color: '#A3CE5B',\n  plane: newPlane,\n  bom: [],\n}\n}\n"
     },
     {
       "atomType": "Input",
@@ -338,6 +340,13 @@
       "y": 0.5097588978185994,
       "uniqueID": "id-63",
       "name": "Extrude_height"
+    },
+    {
+      "atomType": "Input",
+      "x": 0.025384615384615384,
+      "y": 0.6020665901262917,
+      "uniqueID": "id-71",
+      "name": "Fillet"
     }
   ],
   "allConnectors": [
@@ -347,14 +356,14 @@
       "ap2ID": "id-22"
     },
     {
-      "ap2Name": "shape",
-      "ap1ID": "id-4",
-      "ap2ID": "id-49"
-    },
-    {
       "ap2Name": "number or geometry",
       "ap1ID": "id-4",
       "ap2ID": "id-2"
+    },
+    {
+      "ap2Name": "shape",
+      "ap1ID": "id-4",
+      "ap2ID": "id-49"
     },
     {
       "ap2Name": "base1",
