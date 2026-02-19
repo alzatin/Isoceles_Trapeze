@@ -20,26 +20,30 @@
     },
     {
       "atomType": "Code",
-      "x": 0.5044008124576844,
-      "y": 0.5164179104477612,
+      "x": 0.4134304207119741,
+      "y": 0.3373134328358209,
       "uniqueID": "id-4",
       "ioValues": [
         {
-          "name": "shape",
-          "ioValue": "__GEOMETRY_INPUT__"
-        },
-        {
-          "name": "radius",
-          "ioValue": 5,
-          "currentEquation": "5"
-        },
-        {
           "name": "height",
-          "ioValue": 10
+          "ioValue": 10,
+          "currentEquation": "10"
+        },
+        {
+          "name": "base1",
+          "ioValue": 40
+        },
+        {
+          "name": "base2",
+          "ioValue": 20
+        },
+        {
+          "name": "tr_height",
+          "ioValue": 25
         }
       ],
       "codeVersion": 1,
-      "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"shape\", type: \"geometry\", defaultValue: null },\n  { inputName: \"radius\", type: \"number\", defaultValue: 5 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 }\n];\nconst base1 = 40; // bottom base\nconst base2 = 20; // top base\nconst height = 15;\nconst dx = (base1 - base2) / 2;\n\nconst trapezoid = replicad.draw().lineTo([base1, 0])                 // bottom right\n  .lineTo([base1 - dx, height])       // top right\n  .lineTo([dx, height])               // top left\n  .close()   \nlet newPlane = replicad.makePlane()\n\nlet sketchCir = trapezoid.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet cylObj = {\n  geometry: [cyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\nreturn cylObj"
+      "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"base1\", type: \"number\", defaultValue: 40 },\n  { inputName: \"base2\", type: \"number\", defaultValue: 25 },\n  { inputName: \"tr_height\", type: \"number\", defaultValue: 25 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 }\n  \n];\n\nconst dx = (base1 - base2) / 2;\n\nconst trapezoid = replicad.draw().lineTo([base1, 0])                 // bottom right\n  .lineTo([base1 - dx, tr_height])       // top right\n  .lineTo([dx, tr_height])               // top left\n  .close()   \nlet newPlane = replicad.makePlane()\n\nlet sketchCir = trapezoid.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet cylObj = {\n  geometry: [cyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\nreturn cylObj"
     }
   ],
   "allConnectors": [],
