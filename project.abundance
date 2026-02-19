@@ -1,174 +1,174 @@
 {
-  "atomType": "Molecule",
-  "x": 0,
-  "y": 0,
-  "uniqueID": "id-1",
-  "name": "Isoceles_Trapeze",
-  "ioValues": [
-    {
-      "name": "Base1",
-      "ioValue": 20,
-      "currentEquation": "20"
-    },
-    {
-      "name": "Base2",
-      "ioValue": 10,
-      "currentEquation": "10"
-    },
-    {
-      "name": "Trap_Height",
-      "ioValue": 10,
-      "currentEquation": "10"
-    },
-    {
-      "name": "Extrude_height",
-      "ioValue": 5,
-      "currentEquation": "5"
-    },
-    {
-      "name": "Fillet",
-      "ioValue": 0
-    }
-  ],
-  "topLevel": true,
-  "allAtoms": [
-    {
-      "atomType": "Output",
-      "x": 0.98,
-      "y": 0.5,
-      "uniqueID": "id-2",
-      "ioValues": [
+    "atomType": "Molecule",
+    "x": 0,
+    "y": 0,
+    "uniqueID": "id-1",
+    "name": "Isoceles_Trapezoid",
+    "ioValues": [
         {
-          "name": "number or geometry",
-          "ioValue": "__GEOMETRY_INPUT__"
+            "name": "Base1",
+            "ioValue": 20,
+            "currentEquation": "20"
+        },
+        {
+            "name": "Base2",
+            "ioValue": 10,
+            "currentEquation": "10"
+        },
+        {
+            "name": "Trap_Height",
+            "ioValue": 10,
+            "currentEquation": "10"
+        },
+        {
+            "name": "Extrude_height",
+            "ioValue": 5,
+            "currentEquation": "5"
+        },
+        {
+            "name": "Fillet",
+            "ioValue": 0
         }
-      ]
-    },
-    {
-      "atomType": "Code",
-      "x": 0.32584269662921345,
-      "y": 0.3940298507462686,
-      "uniqueID": "id-4",
-      "ioValues": [
+    ],
+    "topLevel": true,
+    "allAtoms": [
         {
-          "name": "height",
-          "ioValue": 5,
-          "currentEquation": "10"
+            "atomType": "Output",
+            "x": 0.98,
+            "y": 0.5,
+            "uniqueID": "id-2",
+            "ioValues": [
+                {
+                    "name": "number or geometry",
+                    "ioValue": "__GEOMETRY_INPUT__"
+                }
+            ]
         },
         {
-          "name": "base1",
-          "ioValue": 20
+            "atomType": "Code",
+            "x": 0.32584269662921345,
+            "y": 0.3940298507462686,
+            "uniqueID": "id-4",
+            "ioValues": [
+                {
+                    "name": "height",
+                    "ioValue": 5,
+                    "currentEquation": "10"
+                },
+                {
+                    "name": "base1",
+                    "ioValue": 20
+                },
+                {
+                    "name": "base2",
+                    "ioValue": 10
+                },
+                {
+                    "name": "tr_height",
+                    "ioValue": 10
+                },
+                {
+                    "name": "fillet",
+                    "ioValue": 0,
+                    "currentEquation": "0"
+                }
+            ],
+            "codeVersion": 1,
+            "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"base1\", type: \"number\", defaultValue: 40 },\n  { inputName: \"base2\", type: \"number\", defaultValue: 25 },\n  { inputName: \"tr_height\", type: \"number\", defaultValue: 25 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 },\n  { inputName: \"fillet\", type: \"number\", defaultValue: 0 }\n  \n];\n\n\n\nconst dx = (base1 - base2) / 2;\n\nconst trapezoid = replicad.draw().lineTo([base1, 0])                 // bottom right\n  .lineTo([base1 - dx, tr_height])       // top right\n  .lineTo([dx, tr_height])               // top left\n  .close()   \nlet newPlane = replicad.makePlane()\n\nlet sketchCir = trapezoid.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet cylObj = {\n  geometry: [cyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\nreturn cylObj"
         },
         {
-          "name": "base2",
-          "ioValue": 10
+            "atomType": "Code",
+            "x": 0.6198501872659177,
+            "y": 0.4567164179104477,
+            "uniqueID": "id-49",
+            "ioValues": [
+                {
+                    "name": "shape",
+                    "ioValue": "__GEOMETRY_INPUT__"
+                },
+                {
+                    "name": "fillet",
+                    "ioValue": 0,
+                    "currentEquation": "1"
+                }
+            ],
+            "codeVersion": 1,
+            "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"shape\", type: \"geometry\", defaultValue: null },\n  { inputName: \"fillet\", type: \"number\", defaultValue: 1 },\n];\n\nlet importedShape = library[shape]\nlet newPlane = replicad.makePlane()\n\nif (fillet > 0){\n  \nlet filletedCyl = importedShape.geometry[0].fillet(fillet, (e) => e.inDirection([0, 0, 1]));\n return {\n  geometry: [filletedCyl],\n  dimension: \"3D\",\n  tags: [\"createdShape\"],\n  color: '#A3CE5B',\n  plane: newPlane,\n  bom: [],\n}\n}\nelse{\n  return {\n  geometry: [importedShape],\n  dimension: \"3D\",\n  tags: [\"createdShape\"],\n  color: '#A3CE5B',\n  plane: newPlane,\n  bom: [],\n}\n  \n}\n"
         },
         {
-          "name": "tr_height",
-          "ioValue": 10
+            "atomType": "Input",
+            "x": 0.025384615384615384,
+            "y": 0.2328358208955224,
+            "uniqueID": "id-54",
+            "name": "Base1"
         },
         {
-          "name": "fillet",
-          "ioValue": 0,
-          "currentEquation": "0"
+            "atomType": "Input",
+            "x": 0.025384615384615384,
+            "y": 0.3251435132032147,
+            "uniqueID": "id-57",
+            "name": "Base2"
+        },
+        {
+            "atomType": "Input",
+            "x": 0.025384615384615384,
+            "y": 0.41745120551090703,
+            "uniqueID": "id-60",
+            "name": "Trap_Height"
+        },
+        {
+            "atomType": "Input",
+            "x": 0.025384615384615384,
+            "y": 0.5097588978185994,
+            "uniqueID": "id-63",
+            "name": "Extrude_height"
+        },
+        {
+            "atomType": "Input",
+            "x": 0.025384615384615384,
+            "y": 0.6020665901262917,
+            "uniqueID": "id-71",
+            "name": "Fillet"
         }
-      ],
-      "codeVersion": 1,
-      "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"base1\", type: \"number\", defaultValue: 40 },\n  { inputName: \"base2\", type: \"number\", defaultValue: 25 },\n  { inputName: \"tr_height\", type: \"number\", defaultValue: 25 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 },\n  { inputName: \"fillet\", type: \"number\", defaultValue: 0 }\n  \n];\n\n\n\nconst dx = (base1 - base2) / 2;\n\nconst trapezoid = replicad.draw().lineTo([base1, 0])                 // bottom right\n  .lineTo([base1 - dx, tr_height])       // top right\n  .lineTo([dx, tr_height])               // top left\n  .close()   \nlet newPlane = replicad.makePlane()\n\nlet sketchCir = trapezoid.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet cylObj = {\n  geometry: [cyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\nreturn cylObj"
-    },
-    {
-      "atomType": "Code",
-      "x": 0.6198501872659177,
-      "y": 0.4567164179104477,
-      "uniqueID": "id-49",
-      "ioValues": [
+    ],
+    "allConnectors": [
         {
-          "name": "shape",
-          "ioValue": "__GEOMETRY_INPUT__"
+            "ap2Name": "shape",
+            "ap1ID": "id-4",
+            "ap2ID": "id-49"
         },
         {
-          "name": "fillet",
-          "ioValue": 0,
-          "currentEquation": "1"
+            "ap2Name": "number or geometry",
+            "ap1ID": "id-49",
+            "ap2ID": "id-2"
+        },
+        {
+            "ap2Name": "base1",
+            "ap1ID": "id-54",
+            "ap2ID": "id-4"
+        },
+        {
+            "ap2Name": "base2",
+            "ap1ID": "id-57",
+            "ap2ID": "id-4"
+        },
+        {
+            "ap2Name": "tr_height",
+            "ap1ID": "id-60",
+            "ap2ID": "id-4"
+        },
+        {
+            "ap2Name": "height",
+            "ap1ID": "id-63",
+            "ap2ID": "id-4"
+        },
+        {
+            "ap2Name": "fillet",
+            "ap1ID": "id-71",
+            "ap2ID": "id-49"
         }
-      ],
-      "codeVersion": 1,
-      "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"shape\", type: \"geometry\", defaultValue: null },\n  { inputName: \"fillet\", type: \"number\", defaultValue: 1 },\n];\n\nlet importedShape = library[shape]\nlet newPlane = replicad.makePlane()\n\nif (fillet > 0){\n  \nlet filletedCyl = importedShape.geometry[0].fillet(fillet, (e) => e.inDirection([0, 0, 1]));\n return {\n  geometry: [filletedCyl],\n  dimension: \"3D\",\n  tags: [\"createdShape\"],\n  color: '#A3CE5B',\n  plane: newPlane,\n  bom: [],\n}\n}\nelse{\n  return {\n  geometry: [importedShape],\n  dimension: \"3D\",\n  tags: [\"createdShape\"],\n  color: '#A3CE5B',\n  plane: newPlane,\n  bom: [],\n}\n  \n}\n"
-    },
-    {
-      "atomType": "Input",
-      "x": 0.025384615384615384,
-      "y": 0.2328358208955224,
-      "uniqueID": "id-54",
-      "name": "Base1"
-    },
-    {
-      "atomType": "Input",
-      "x": 0.025384615384615384,
-      "y": 0.3251435132032147,
-      "uniqueID": "id-57",
-      "name": "Base2"
-    },
-    {
-      "atomType": "Input",
-      "x": 0.025384615384615384,
-      "y": 0.41745120551090703,
-      "uniqueID": "id-60",
-      "name": "Trap_Height"
-    },
-    {
-      "atomType": "Input",
-      "x": 0.025384615384615384,
-      "y": 0.5097588978185994,
-      "uniqueID": "id-63",
-      "name": "Extrude_height"
-    },
-    {
-      "atomType": "Input",
-      "x": 0.025384615384615384,
-      "y": 0.6020665901262917,
-      "uniqueID": "id-71",
-      "name": "Fillet"
-    }
-  ],
-  "allConnectors": [
-    {
-      "ap2Name": "shape",
-      "ap1ID": "id-4",
-      "ap2ID": "id-49"
-    },
-    {
-      "ap2Name": "number or geometry",
-      "ap1ID": "id-49",
-      "ap2ID": "id-2"
-    },
-    {
-      "ap2Name": "base1",
-      "ap1ID": "id-54",
-      "ap2ID": "id-4"
-    },
-    {
-      "ap2Name": "base2",
-      "ap1ID": "id-57",
-      "ap2ID": "id-4"
-    },
-    {
-      "ap2Name": "tr_height",
-      "ap1ID": "id-60",
-      "ap2ID": "id-4"
-    },
-    {
-      "ap2Name": "height",
-      "ap1ID": "id-63",
-      "ap2ID": "id-4"
-    },
-    {
-      "ap2Name": "fillet",
-      "ap1ID": "id-71",
-      "ap2ID": "id-49"
-    }
-  ],
-  "unitsKey": "Unitless",
-  "fileTypeVersion": 1,
-  "filetypeVersion": 1
+    ],
+    "unitsKey": "Unitless",
+    "fileTypeVersion": 1,
+    "filetypeVersion": 1
 }
