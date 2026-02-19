@@ -4,6 +4,28 @@
   "y": 0,
   "uniqueID": "id-1",
   "name": "Isoceles_Trapeze",
+  "ioValues": [
+    {
+      "name": "Base1",
+      "ioValue": 20,
+      "currentEquation": "20"
+    },
+    {
+      "name": "Base2",
+      "ioValue": 10,
+      "currentEquation": "10"
+    },
+    {
+      "name": "Trap_Height",
+      "ioValue": 10,
+      "currentEquation": "10"
+    },
+    {
+      "name": "Extrude_height",
+      "ioValue": 5,
+      "currentEquation": "5"
+    }
+  ],
   "topLevel": true,
   "allAtoms": [
     {
@@ -20,33 +42,337 @@
     },
     {
       "atomType": "Code",
-      "x": 0.4134304207119741,
-      "y": 0.3373134328358209,
+      "x": 0.3548689138576779,
+      "y": 0.3970149253731343,
       "uniqueID": "id-4",
       "ioValues": [
         {
           "name": "height",
-          "ioValue": 10,
+          "ioValue": 5,
           "currentEquation": "10"
         },
         {
           "name": "base1",
-          "ioValue": 40
-        },
-        {
-          "name": "base2",
           "ioValue": 20
         },
         {
+          "name": "base2",
+          "ioValue": 10
+        },
+        {
           "name": "tr_height",
-          "ioValue": 25
+          "ioValue": 10
         }
       ],
       "codeVersion": 1,
       "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"base1\", type: \"number\", defaultValue: 40 },\n  { inputName: \"base2\", type: \"number\", defaultValue: 25 },\n  { inputName: \"tr_height\", type: \"number\", defaultValue: 25 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 }\n  \n];\n\nconst dx = (base1 - base2) / 2;\n\nconst trapezoid = replicad.draw().lineTo([base1, 0])                 // bottom right\n  .lineTo([base1 - dx, tr_height])       // top right\n  .lineTo([dx, tr_height])               // top left\n  .close()   \nlet newPlane = replicad.makePlane()\n\nlet sketchCir = trapezoid.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet cylObj = {\n  geometry: [cyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\nreturn cylObj"
+    },
+    {
+      "atomType": "GitHubMolecule",
+      "x": 0.5574433656957929,
+      "y": 0.755223880597015,
+      "uniqueID": "id-22",
+      "name": "Fillet",
+      "ioValues": [
+        {
+          "name": "3D-Shape",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "Fillet val",
+          "ioValue": 1,
+          "currentEquation": "1"
+        }
+      ],
+      "topLevel": false,
+      "allAtoms": [
+        {
+          "atomType": "Output",
+          "x": 0.98,
+          "y": 0.5,
+          "uniqueID": "id-13",
+          "ioValues": [
+            {
+              "name": "number or geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ]
+        },
+        {
+          "atomType": "Code",
+          "x": 0.5820000000000001,
+          "y": 0.6253776435045317,
+          "uniqueID": "id-14",
+          "ioValues": [
+            {
+              "name": "fillet",
+              "ioValue": 1
+            },
+            {
+              "name": "shape",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "shape2",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ],
+          "codeVersion": 1,
+          "code": "\n      const Inputs = [\n       {inputName: \"shape\", type: \"geometry\", defaultValue: null},\n         {inputName: \"shape2\", type: \"geometry\", defaultValue: null},\n      {inputName: \"fillet\", type: \"number\", defaultValue: .5},\n      \n      ]\n      //This defines the molecules inputs and creates variables with the same names which can be referenced in the code\n\n      //Takes the address and gets the shape from the library\n      let importedShape = library[shape]\n      console.log(importedShape)\n      if (!importedShape){\n        importedShape =library[shape2]\n      }\n      //This makes a new copy of the shape and moves it in the X direction\n      //let filletShape = importedShape.geometry[0].clone().fillet(fillet)\n      let filletAssembly =  await Fillet(importedShape, fillet)\n\n      //Console.log works for debugging to better see what is happening under the hood\n      console.log(\"Shape:\")\n      console.log(importedShape);\n\n      //Shapes stored in the library have tags, a color, a plane, and a bill of materials like this. We don't modify them here\n      let shape1 = {\n        geometry: [filletAssembly],\n        tags: importedShape.tags,\n        color: importedShape.color,\n        plane: importedShape.plane,\n        bom: importedShape.bom\n      }\n\n    return shape1\n      "
+        },
+        {
+          "atomType": "Circle",
+          "x": 0.19632495164410058,
+          "y": 0.38253012048192775,
+          "uniqueID": "id-15",
+          "ioValues": [
+            {
+              "name": "diameter",
+              "ioValue": 10
+            }
+          ]
+        },
+        {
+          "atomType": "Extrude",
+          "x": 0.32941176470588235,
+          "y": 0.2054380664652568,
+          "uniqueID": "id-16",
+          "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "height",
+              "ioValue": 10
+            }
+          ]
+        },
+        {
+          "atomType": "Input",
+          "x": 0.025384615384615384,
+          "y": 0.15384615384615385,
+          "uniqueID": "id-17",
+          "name": "3D-Shape",
+          "type": "geometry"
+        },
+        {
+          "atomType": "Input",
+          "x": 0.025384615384615384,
+          "y": 0.24615384615384617,
+          "uniqueID": "id-18",
+          "name": "Fillet val",
+          "type": "number"
+        },
+        {
+          "atomType": "Assembly",
+          "x": 0.6533333333333333,
+          "y": 0.25075528700906347,
+          "uniqueID": "id-19",
+          "ioValues": [
+            {
+              "name": "Shape 1",
+              "ioValue": null
+            },
+            {
+              "name": "Shape 2",
+              "ioValue": null
+            }
+          ]
+        },
+        {
+          "atomType": "Rectangle",
+          "x": 0.20682302771855013,
+          "y": 0.8096676737160121,
+          "uniqueID": "id-20",
+          "ioValues": [
+            {
+              "name": "x length",
+              "ioValue": 10
+            },
+            {
+              "name": "y length",
+              "ioValue": 10
+            }
+          ]
+        },
+        {
+          "atomType": "Extrude",
+          "x": 0.3521008403361344,
+          "y": 0.7885196374622356,
+          "uniqueID": "id-21",
+          "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "height",
+              "ioValue": 2
+            }
+          ]
+        }
+      ],
+      "allConnectors": [
+        {
+          "ap2Name": "number or geometry",
+          "ap1ID": "id-14",
+          "ap2ID": "id-13"
+        },
+        {
+          "ap2Name": "geometry",
+          "ap1ID": "id-15",
+          "ap2ID": "id-16"
+        },
+        {
+          "ap2Name": "Shape 1",
+          "ap1ID": "id-16",
+          "ap2ID": "id-19"
+        },
+        {
+          "ap2Name": "shape2",
+          "ap1ID": "id-16",
+          "ap2ID": "id-14"
+        },
+        {
+          "ap2Name": "shape",
+          "ap1ID": "id-17",
+          "ap2ID": "id-14"
+        },
+        {
+          "ap2Name": "fillet",
+          "ap1ID": "id-18",
+          "ap2ID": "id-14"
+        },
+        {
+          "ap2Name": "geometry",
+          "ap1ID": "id-20",
+          "ap2ID": "id-21"
+        },
+        {
+          "ap2Name": "Shape 2",
+          "ap1ID": "id-21",
+          "ap2ID": "id-19"
+        }
+      ],
+      "parentRepo": {
+        "lastFoundGit": "2026-02-19T10:23:39.209Z",
+        "privateRepo": false,
+        "repoName": "Fillet",
+        "dateCreated": "2025-09-11T17:53:30Z",
+        "likes": 0,
+        "readMe": "https://raw.githubusercontent.com/alzatin/Fillet/master/README.md?sanitize=true",
+        "yyyy": 2025,
+        "topMoleculeID": "af7414ca-2d93-4ac0-abbd-27feee4ef8f1",
+        "notFound": false,
+        "githubMoleculesUsed": [],
+        "html_url": "https://github.com/alzatin/Fillet",
+        "topics": [
+          "abundance-tool"
+        ],
+        "parentRepo": null,
+        "forks": 0,
+        "dateModified": "739657",
+        "ranking": 2.7,
+        "searchField": "fillet alzatin fillet operation: receives a 3d shape and fillets the shape by a given value.  abundance-tool",
+        "owner": "alzatin",
+        "description": "Fillet operation: Receives a 3D shape and fillets the shape by a given value. ",
+        "contentURL": "https://raw.githubusercontent.com/alzatin/Fillet/master/project.abundance?sanitize=true",
+        "svgURL": "https://raw.githubusercontent.com/alzatin/Fillet/master/project.svg?sanitize=true",
+        "isLocal": false
+      },
+      "unitsKey": "Inches",
+      "fileTypeVersion": 1
+    },
+    {
+      "atomType": "Code",
+      "x": 0.7402912621359223,
+      "y": 0.6149253731343284,
+      "uniqueID": "id-49",
+      "ioValues": [
+        {
+          "name": "shape",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "radius",
+          "ioValue": 5,
+          "currentEquation": "5"
+        },
+        {
+          "name": "height",
+          "ioValue": 10
+        }
+      ],
+      "codeVersion": 1,
+      "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"shape\", type: \"geometry\", defaultValue: null },\n  { inputName: \"radius\", type: \"number\", defaultValue: 5 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 }\n];\n\nlet importedShape = library[shape];\nlet newPlane = replicad.makePlane()\nlet circDraw = replicad.drawCircle(radius)\nlet sketchCir = circDraw.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet cylObj = {\n  geometry: [cyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\n\nlet assembly = await Assembly([importedShape, cylObj]);\nreturn assembly;\n"
+    },
+    {
+      "atomType": "Input",
+      "x": 0.025384615384615384,
+      "y": 0.2328358208955224,
+      "uniqueID": "id-54",
+      "name": "Base1"
+    },
+    {
+      "atomType": "Input",
+      "x": 0.025384615384615384,
+      "y": 0.3251435132032147,
+      "uniqueID": "id-57",
+      "name": "Base2"
+    },
+    {
+      "atomType": "Input",
+      "x": 0.025384615384615384,
+      "y": 0.41745120551090703,
+      "uniqueID": "id-60",
+      "name": "Trap_Height"
+    },
+    {
+      "atomType": "Input",
+      "x": 0.025384615384615384,
+      "y": 0.5097588978185994,
+      "uniqueID": "id-63",
+      "name": "Extrude_height"
     }
   ],
-  "allConnectors": [],
+  "allConnectors": [
+    {
+      "ap2Name": "3D-Shape",
+      "ap1ID": "id-4",
+      "ap2ID": "id-22"
+    },
+    {
+      "ap2Name": "shape",
+      "ap1ID": "id-4",
+      "ap2ID": "id-49"
+    },
+    {
+      "ap2Name": "number or geometry",
+      "ap1ID": "id-4",
+      "ap2ID": "id-2"
+    },
+    {
+      "ap2Name": "base1",
+      "ap1ID": "id-54",
+      "ap2ID": "id-4"
+    },
+    {
+      "ap2Name": "base2",
+      "ap1ID": "id-57",
+      "ap2ID": "id-4"
+    },
+    {
+      "ap2Name": "tr_height",
+      "ap1ID": "id-60",
+      "ap2ID": "id-4"
+    },
+    {
+      "ap2Name": "height",
+      "ap1ID": "id-63",
+      "ap2ID": "id-4"
+    }
+  ],
   "unitsKey": "Inches",
   "fileTypeVersion": 1,
   "filetypeVersion": 1
